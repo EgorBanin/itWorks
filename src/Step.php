@@ -2,23 +2,34 @@
 
 namespace ItWorks;
 
-abstract class Step {
+class Step {
+
+	private $description;
+
+	private $impl;
+
+	private $successAssertions = [];
 	
-	protected function before() {
-
+	public function __construct($description, \Closure $impl) {
+		$this->description = $description;
+		$this->impl = $impl->bindTo($this);
 	}
 
-	protected function after() {
-
+	public static function assert($description, $assertion) {
+		if ($assertion) {
+			$this->successAssertions[] = $description;
+		} else {
+			self::fail("Ложно: $description");
+		}
 	}
 
-	abstract public function invoke();
+	public static function fail($message) {
+		throw new StepFailException($message);
+	}
 
 	public function __invoke() {
-		$this->before();
 		$agrs = func_get_args();
-		$result = $this->invoke($args)
-		$this->after();
+		$result = $this->impl($args)
 		
 		return $result;
 	}
