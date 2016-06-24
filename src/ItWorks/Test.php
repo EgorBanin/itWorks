@@ -19,7 +19,7 @@ class Test {
 	public function run(array $params = []) {
 		foreach ($this->steps as $step) {
 			try {
-				$result = $step($params);
+				$result = call_user_func_array($step, $params);
 			} catch(StepFailException $fail) {
 				$this->result->fail($step, $fail->getMessage());
 				break;
@@ -30,7 +30,7 @@ class Test {
 			$params = $result;
 		}
 
-		return $result;
+		return $this->result;
 	}
 
 }

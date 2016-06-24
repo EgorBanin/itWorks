@@ -5,8 +5,8 @@ $step = new \ItWorks\Step(
 	function($wd) {
 		$elements = $wd->findElements(WebDriverBy::cssSelector('input#lst-ib'));
 		$this->assert(
-			! empty($elements)),
-			'На странице присутствет строка поиска (input#lst-ib)'
+			'На странице присутствет строка поиска (input#lst-ib)',
+			! empty($elements)
 		);
 		$searchInput = reset($elements);
 		$searchInput->click();
@@ -14,12 +14,12 @@ $step = new \ItWorks\Step(
 		$wd->getKeyboard()->sendKeys($q);
 		$wd->->getKeyboard()->pressKey(WebDriverKeys::ENTER);
 		$this->assert(
-			strpos($wd->getTitle(), $q) !== false,
-			"Заголовок содержит $q"
+			"Заголовок содержит $q",
+			strpos($wd->getTitle(), $q) !== false
 		);
 		$this->assert(
-			! empty($wd->findElements(WebDriverBy::cssSelector('.srg'))),
-			'На странице присутствуют результаты поиска (.srg)'
+			'На странице присутствуют результаты поиска (.srg)',
+			! empty($wd->findElements(WebDriverBy::cssSelector('.srg')))
 		);
 
 		return $wd;

@@ -6,16 +6,20 @@ class Step {
 
 	private $description;
 
-	private $impl;
+	protected $impl;
 
 	private $successAssertions = [];
 	
 	public function __construct($description, \Closure $impl) {
 		$this->description = $description;
-		$this->impl = $impl->bindTo($this);
+		// $this->impl = $impl->bindTo($this, $this);
 	}
 
-	public static function assert($description, $assertion) {
+	public function setImpl($impl) {
+		$this->impl = $impl->bindTo($this, $this);
+	}
+
+	public function assert($description, $assertion) {
 		if ($assertion) {
 			$this->successAssertions[] = $description;
 		} else {
@@ -23,13 +27,13 @@ class Step {
 		}
 	}
 
-	public static function fail($message) {
+	public function fail($message) {
 		throw new StepFailException($message);
 	}
 
 	public function __invoke() {
-		$agrs = func_get_args();
-		$result = $this->impl($args)
+		$args = func_get_args();
+		$result = call_user_func_array($this->impl, $args);
 		
 		return $result;
 	}
