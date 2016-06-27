@@ -1,12 +1,12 @@
 <?php
 
 $step = new \ItWorks\Step(
-	'Проверяем открытие вкладки Картинки',
+	'Проверяем открытие вкладки Видео',
 	function($wd) {
 		$oldTitle = $wd->getTitle();
-		$elements = $wd->findElements(WebDriverBy::cssSelector('#hdtb-msb a[href*="tbm=isch"]'));
+		$elements = $wd->findElements(WebDriverBy::cssSelector('#hdtb-msb a[href*="tbm=vid"]'));
 		$this->assert(
-			'На странице присутствет кнопка Картинки (#hdtb-msb a[href*="tbm=isch"])',
+			'На странице присутствет кнопка Картинки (#hdtb-msb a[href*="tbm=vid"])',
 			! empty($elements)
 		);
 		$imgButton = reset($elements);
