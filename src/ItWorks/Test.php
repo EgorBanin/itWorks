@@ -27,7 +27,8 @@ class Test {
 				$this->result->error($step, $e->getMessage());
 				break;
 			}
-			$params = $result;
+			$params = is_array($result)? $result : [$result];
+			$this->result->pass($step);
 		}
 
 		return $this->result;

@@ -4,7 +4,7 @@ namespace ItWorks;
 
 class TestBuilder {
 	
-	public static function build($stepsDir, array $steps) {
+	public function build($stepsDir, array $steps) {
 		$tests = [];
 		$stepsForTests = self::stepsForTests($steps);
 		foreach ($stepsForTests as $testSteps) {
