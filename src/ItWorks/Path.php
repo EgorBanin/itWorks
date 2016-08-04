@@ -10,14 +10,14 @@ class Path {
 		$this->points[] = [$stateId, $params];
 	}
 
-	public static function __callStatic($name, array $arguments) {
+	public static function __callStatic($name, $arguments) {
 		$self = new self();
-		$self->addPoint($name, $params);
+		$self->addPoint($name, $arguments);
 
 		return $self;
 	}
 
-	public function __call($name, array $arguments) {
+	public function __call($name, $arguments) {
 		$this->addPoint($name, $arguments);
 
 		return $this;
@@ -25,9 +25,10 @@ class Path {
 
 	public function eachInterval($func) {
 		reset($this->points);
-		while (list($a, $aParams) = each($this->points)) {
+		while (list(, $aPoint) = each($this->points)) {
 			$bPoint = current($this->points);
 			if ($bPoint) {
+				list($a, $aParams) = $aPoint;
 				list($b, $bParams) = $bPoint;
 				call_user_func($func, $a, $aParams, $b, $bParams);
 			}
