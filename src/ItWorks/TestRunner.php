@@ -3,21 +3,22 @@
 namespace ItWorks;
 
 class TestRunner {
+	
+	private $baseDir;
 
-	public function run(array $tests, array $params = []) {
-		$results = [];
-		foreach ($tests as $test) {
-			// fixme
-			$capabilities = array(\WebDriverCapabilityType::BROWSER_NAME => 'firefox');
-			$wd = \RemoteWebDriver::create('http://192.168.50.1:4447/wd/hub', $capabilities);
-			$params = [$wd];
+	public function __construct($baseDir) {
+		$this->baseDir = $baseDir;
+	}
 
-			$results[] = $test->run($params);
-
-			$wd->quit();
+	public function run($nodes, $shared = []) {
+		reset($nodes);
+		while (list($nodeName) = current($nodes)) {
+			list($edgeName, $params) = next($nodes);
+			if ($edgeName) {
+				$node = include $this->baseDir.'/'.$nodeName.'.php';
+				$node->edge($edgeName, array_merge($shared, $params));
+			}
 		}
-
-		return $results;
 	}
 
 }
